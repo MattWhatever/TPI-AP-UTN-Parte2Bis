@@ -1,0 +1,174 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.net.Socket;
+
+public class Cliente extends javax.swing.JFrame{
+public static void main(String[] args) {
+		//Creacion de la clase de cliente, esto es para hacer la conexion con el servidor
+
+		
+
+			final String HOST = "192.168.999.198";
+			final int PUERTO = 5000;
+
+
+
+
+			
+
+
+
+
+		//Variables que vamos usar
+
+
+			String n;
+			DataOutputStream mensaje;
+			DataInputStream entrada;
+			String nombre, cadena;
+			String nombres[] = new String[5];
+			String eq_1, eq_2, eq_3, eq_4;
+			String partido;
+			String cadena2;
+			String mar_ser1, mar_ser2, mar_ser3, mar_ser4;
+			String mar_cli1, mar_cli2, mar_cli3, mar_cli4;
+			String marcador_total;
+			String mar_p1, mar_p2;
+
+		//Constructor nuevos clientes 1*
+
+		new Cliente() {
+			initComponents();
+			jRadioButton1.setEnabled(false);
+			jRadioButton2.setEnabled(false);
+			marcador_1_c.setEnabled(false);
+			marcador_2_c.setEnabled(false);
+			boton_ok.setEnabled(false);
+		}
+
+		//Metodo cliente para hacer la conexion con el servidor 2*
+
+		public void Cliente() {
+			try {
+				Socket sCliente = new Socket(HOST, PUERTO);
+				
+				InputStream aux = sCliente.getInputStream();
+				DataInputStream dis = new DataInputStream(aux);
+
+				cadena = dis.readUTF();
+
+				System.out.println("" + cadena);
+
+				mensaje = new DataOuputStream(sCliente.getOuputStream());
+				mensaje.writeUTF(caja_nombre.getText());
+				mensaje = new DataOuputStream(sCliente.getOuputStream());
+				sCliente.close();
+				nombres();
+
+			} catch (Exception e) {
+				System.out.println ("Error: " + e.getMessage());
+			}
+		}
+
+		//Metodo nombre, nombre de equipo seleccionado 2* 3*
+
+		public void nombres[]{
+			
+			String cad[] = cadena.split(";");
+			for (int i = 0; i < 4; i++) {
+				String nom = cad[1];
+				switch (nom) {
+					case "1":
+						nombre = "Argentina";
+						break;
+					case "2":
+						nombre = "Chile";
+						break;
+					case "3":
+						nombre = "Uruguay";
+						break;
+					case "4":
+						nombre = "Venezuela";
+						break;
+					case "5":
+						nombre = "Brasil";
+						break;
+					case "6":
+						nombre = "Paraguay";
+						break;
+					case "7":
+						nombre = "Ecuador";
+						break;
+					case "8":
+						nombre = "Colombia";
+						break;
+					case "9":
+						nombre = "Bolivia";
+						break;
+					case "10":
+						nombre = "Peru";
+						break;
+				}
+				nombre[i] =nombre;
+			}
+			rsscalelabel.RSScaleLabel.setScaleLabel(bandera_1, "src/Proyecto/equipos/" + cad[0] + ".jpg");
+			rsscalelabel.RSScaleLabel.setScaleLabel(bandera_2, "src/Proyecto/equipos/" + cad[1] + ".jpg");
+			rsscalelabel.RSScaleLabel.setScaleLabel(bandera_3, "src/Proyecto/equipos/" + cad[2] + ".jpg");
+			rsscalelabel.RSScaleLabel.setScaleLabel(bandera_4, "src/Proyecto/equipos/" + cad[3] + ".jpg");
+			jRadioButton1.setText(nombre[0] + " vs " + nombres[1]);
+			jRadioButton1.setText(nombre[2] + " vs " + nombres[3]);
+			eq_1 = cad[0];
+			eq_2 = cad[1];	
+			eq_3 = cad[2];
+			eq_4 = cad[3];
+			mar_ser1 = cad[4];
+			mar_ser2 = cad[5];
+			mar_ser3 = cad[6];
+			mar_ser4 = cad[7];
+		}
+
+
+
+
+		//Para activar las banderas 3*
+		private void boton_okActionPerformed(java.awt.event.ActionEvent evt) {
+			jRadioButton1.setEnabled(true);
+			jRadioButton2.setEnabled(true);
+			marcador_1_c.setEnabled(true);
+			marcador_2_c.setEnabled(true);
+			boton_ok.setEnabled(true);
+
+			if (jRadioButton1.isSelected() == true) {
+				rsscalelabel.RSScaleLabel.setScaleLabel(icono_p1_1, "src/Proyecto/equipos/" + eq_1 + ".jpg");
+				rsscalelabel.RSScaleLabel.setScaleLabel(icono_p1_2, "src/Proyecto/equipos/" + eq_2 + ".jpg");
+				partido = jRadioButton1.getText();
+				mar_p1 = mar_ser1 + "    " + mar_ser2;
+			} else if( jRadioButton2.isSelected() == true) {
+				rsscalelabel.RSScaleLabel.setScaleLabel(icono_p1_1, "src/Proyecto/equipos/" + eq_3 + ".jpg");
+				rsscalelabel.RSScaleLabel.setScaleLabel(icono_p1_2, "src/Proyecto/equipos/" + eq_4 + ".jpg");
+				partido = jRadioButton2.getText();
+				mar_p1 = mar_ser3 + "    " + mar_ser4;
+
+			}
+		}
+
+
+		//Para registrar el cliente 1*; seleccionar el partido
+
+		private void boton_registrarActionPerformed(java.awt.event.ActionEvent evt){
+			clien();
+			caja_nombre.setEditable(false);
+			jRadioButton1.setEnabled(true);
+			jRadioButton2.setEnabled(true);
+			marcador_1_c.setEnabled(false);
+			marcador_2_c.setEnabled(false);
+			boton_ok.setEnabled(true);
+		}
+		
+
+
+}
+}
+
+
