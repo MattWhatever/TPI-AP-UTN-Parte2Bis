@@ -1,0 +1,316 @@
+import javafx.scene.control.Labeled;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Calendar;
+
+public final class Servidor extends javax.swing.JFrame {
+
+
+//Variables que vamos usar
+
+
+    int numprimos[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97};
+    Calendar calendario = new Calendar() {
+        @Override
+        protected void computeTime() {
+
+        }
+
+        @Override
+        protected void computeFields() {
+
+        }
+
+        @Override
+        public void add(int field, int amount) {
+
+        }
+
+        @Override
+        public void roll(int field, boolean up) {
+
+        }
+
+        @Override
+        public int getMinimum(int field) {
+            return 0;
+        }
+
+        @Override
+        public int getMaximum(int field) {
+            return 0;
+        }
+
+        @Override
+        public int getGreatestMinimum(int field) {
+            return 0;
+        }
+
+        @Override
+        public int getLeastMaximum(int field) {
+            return 0;
+        }
+    };
+    int hora, minutos, segundos;
+    int g, a, m, c, k, x1, x0 = 0;
+    double r;
+    int res[] = new int[4];
+    boolean con = true;
+    int e_1, e_2, e_3, e_4;
+    int m_1, m_2, m_3, m_4;
+    int tiempo = 0;
+    int t_2 = tiempo;
+
+    String cadena = "";
+
+    static final int PUERTO = 5000;
+    String nombre;
+    BufferedReader entrada, salida;
+
+// Constructor de la clase servidor
+
+    public void Servidor() {
+        this.initComponents();
+    }
+
+    private void initComponents() {
+
+    }
+
+//Metodo servidor, conexión entre el servidor y el cliente
+
+    public void servi() {
+        try {
+            ServerSocket ss = new ServerSocket(PUERTO);
+            Socket sCliente = new Socket();
+
+            System.out.println("Esperando conexión con el cliente");
+
+
+            for (int j = 1; j <= 6; j++) {
+                sCliente = ss.accept();
+                OutputStream os = sCliente.getOutputStream();
+                DataOutputStream dos = new DataOutputStream(os);
+                BufferedReader entada = null;
+                if (j <= 3) {
+                    entrada = new BufferedReader(new InputStreamReader(sCliente.getInputStream()));
+                    dos.writeUTF(cadena);
+                    nombre = entada.readLine();
+                    System.out.println("Atendiendo al cliente: " + nombre);
+                } else {
+                    entrada = new BufferedReader(new InputStreamReader(sCliente.getInputStream()));
+                    nombre = entada.readLine();
+                    System.out.println("Información de los resultados: " + nombre);
+
+                    this.ingresar();
+                }
+            }
+            sCliente.close();
+            ss.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+
+//Metodo de ingresar, aqui se genera los datos mediante una tabla que esta en el servidor
+
+    public void ingresar() {
+        String[] cad = nombre.split(";");
+        DefaultRowSorter<Object, Object> jTable1 = null;
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        Object[] fila = new Object[5];
+
+        fila[0] = cad[0];
+        fila[1] = cad[1];
+        fila[2] = cad[2];
+        fila[3] = cad[3];
+        fila[4] = "Perdio";
+
+
+        modelo.addRow(fila);
+
+        AbstractButton jTablel = null;
+        jTablel.setModel((ButtonModel) modelo);
+
+    }
+
+
+//Metodo de inicio, aqui se gerena de manera aleatoria los numeros, variables aleatorias para asi generar los equipos
+
+    public void inicio() {
+        hora = calendario.get(Calendar.HOUR_OF_DAY);
+        minutos = calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND);
+        x0 = (int) (Math.random() * 50);
+        k = minutos + hora;
+        g = 7;
+        a = (1 + 4 * (k));
+        m = (int) Math.pow(2, g);
+
+        while (m > numPrimos[i]) {
+            i++;
+        }
+        c = numPrimos[i - i];
+        this.equipos();
+    }
+
+// Equipos contra quien va jugar por medio de numeros aleatorios que equipos se va enfrentar contra que equipo y por sus goles
+
+    public void equipos() {
+        for (int i = 0; i < res.length; i++) {
+            x1 = ((a * x0 + c) % m);
+            if (x1 >= 0 && x1 <= 10) {
+                res[i] = 1;
+            } else if (x1 >= 11 && x1 <= 20) {
+                res[i] = 2;
+            } else if (x1 >= 21 && x1 <= 30) {
+                res[i] = 3;
+            } else if (x1 >= 31 && x1 <= 40) {
+                res[i] = 4;
+            } else if (x1 >= 41 && x1 <= 50) {
+                res[i] = 5;
+            } else if (x1 >= 51 && x1 <= 60) {
+                res[i] = 6;
+            } else if (x1 >= 61 && x1 <= 70) {
+                res[i] = 7;
+            } else if (x1 >= 71 && x1 <= 80) {
+                res[i] = 8;
+            } else if (x1 >= 81 && x1 <= 90) {
+                res[i] = 9;
+            } else if (x1 >= 91 && x1 <= 100) {
+                res[i] = 10;
+            } else if (x1 >= 101 && x1 <= 110) {
+                res[i] = 11;
+            } else if (x1 >= 111 && x1 <= 127) {
+                res[i] = 12;
+            }
+
+            x0 = x1;
+
+        }
+
+        generar_equipo_1();
+        this.marcadores();
+    }
+
+
+//Generar los equipos
+
+    public void generar_equipo_1() {
+        e_1 = res[0];
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_1, "src/Proyecto/equipos/" + e_1 + ".jpg");
+        generar_equipo_2();
+    }
+
+    public void generar_equipo_2() {
+        e_2 = res[1];
+        if (e_1 == e_2) {
+            equipos();
+        }
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_2, "src/Proyecto/equipos/" + e_2 + ".jpg");
+        generar_equipo_3();
+    }
+
+    public void generar_equipo_3() {
+        e_3 = res[2];
+        if (e_3 == e_1 || e_3 == e_2) {
+            equipos();
+        }
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_3, "src/Proyecto/equipos/" + e_3 + ".jpg");
+        generar_equipo_4();
+    }
+
+    public void generar_equipo_4() {
+        e_4 = res[3];
+        if (e_4 == e_1 || e_4 == e_2 || e_4 == e_3) equipos();
+    }
+	rsscalelabel.RSScaleLabel.setScaleLabel(icono_4,"src/Proyecto/equipos/"+e_4 +".jpg");
+    
+
+
+
+
+//Metodo marcadores
+
+    public void marcadores() {
+        int[] res2;
+        res2 = new int[0];
+        Labeled marcador_p1_1;
+        marcador_p1_1 = null;
+        marcador_p1_1.setText(Integer.toString(res2[0]));
+        Labeled marcador_p1_2;
+        marcador_p1_2 = null;
+        marcador_p1_2.setText(Integer.toString(res2[1]));
+        Labeled marcador_p2_1;
+        marcador_p2_1 = null;
+        marcador_p2_1.setText(Integer.toString(res2[2]));
+        Labeled marcador_p2_2 = null;
+        marcador_p2_2.setText(Integer.toString(res2[3]));
+        cadena = cadena + Integer.toString(e_1) + ";";
+        cadena = cadena + Integer.toString(e_2) + ";";
+        cadena = cadena + Integer.toString(e_3) + ";";
+        cadena = cadena + Integer.toString(e_4) + ";";
+        cadena = cadena + Integer.toString(res2[0]) + ";";
+        cadena = cadena + Integer.toString(res2[1]) + ";";
+        cadena = cadena + Integer.toString(res2[2]) + ";";
+        cadena = cadena + Integer.toString(res2[3]) + ";";
+        System.out.println(cadena);
+    }
+
+// Metodo limpiar los resultados
+
+    public void limpiar() {
+        Labeled marcador_p1_1;
+        marcador_p1_1 = null;
+        marcador_p1_1.setText("");
+        Labeled marcador_p1_2;
+        marcador_p1_2 = null;
+        marcador_p1_2.setText("");
+        Labeled marcador_p2_1;
+        marcador_p2_1 = null;
+        marcador_p2_1.setText("");
+        Labeled marcador_p2_2 = null;
+        marcador_p2_2.setText("");
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_1, "");
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_2, "");
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_3, "");
+        rsscalelabel.RSScaleLabel.setScaleLabel(icono_4, "");
+        cadena = "";
+        this.inicio();
+    }
+
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.limpiar();
+    }
+
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        con = true;
+        this.servi();
+    }
+
+
+//Clase Main
+
+    public static void main(String args[]) {
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new Servidor().setVisible(true);
+            }
+        });
+    }
+
+
+}
+
